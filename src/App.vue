@@ -1,47 +1,66 @@
+
+
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
+import { reactive } from 'vue';
+
+ const estado = reactive({
+    numero1: "",
+    numero2: "",
+    operacao: "soma",
+    resultado: ""
+  })
+
+  function calcular() {
+    switch (estado.operacao) {
+      case "soma":
+        estado.resultado = parseFloat(estado.numero1) + parseFloat(estado.numero2);
+        return estado.resultado;
+      case "subtracao":
+        estado.resultado = parseFloat(estado.numero1) - parseFloat(estado.numero2);
+        return estado.resultado;
+      case "multiplicacao":
+        estado.resultado = parseFloat(estado.numero1) * parseFloat(estado.numero2);
+        return estado.resultado;
+      case "divisao":
+        estado.resultado = parseFloat(estado.numero1) / parseFloat(estado.numero2);
+        return estado.resultado;
+    }
+  }
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+   <div class="container">
+    <header>
+      <h1 class="p-5 bg-light text-center mt-4 rounded">Calculadora Aritmética</h1>
+    </header>
+    <form>
+      <div class="row pt-4">
+        <inputNumber @keyup="evento => estado.numero1 = evento.target.value" />
+        <div class="col-md-2">
+          <select class="form-control text-center" @change="evento => estado.operacao = evento.target.value">
+            <option value="soma" selected>+</option>
+            <option value="subtracao">-</option>
+            <option value="multiplicacao">*</option>
+            <option value="divisao">/</option>
+          </select>
+        </div>
+        <div class="col">
+          <inputNumber @keyup="evento => estado.numero2 = evento.target.value" />
+        </div>
+      </div>
+    </form>
+    <div class="row pt-4 justify-content-center">
+      <p class="text-center fs-2">Solução</p>
+      <div class="col-4 text-center border p-3 rounded fs-3 text-success text-end overflow-hidden">
+        {{ calcular() }}
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
+ 
 </template>
 
+
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
+
